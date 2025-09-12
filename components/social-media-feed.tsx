@@ -151,10 +151,12 @@ export function SocialMediaFeed({ searchQuery, severityFilter }: SocialMediaFeed
   }
 
   const filteredPosts = posts.filter((post) => {
-    const matchesSearch =
-      searchQuery === "" ||
-      post.content?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.author?.toLowerCase().includes(searchQuery.toLowerCase())
+    
+const matchesSearch =
+  (searchQuery?.trim() ?? "") === "" ||
+  post.content?.toLowerCase().includes(searchQuery?.toLowerCase() ?? "") ||
+  post.author?.toLowerCase().includes(searchQuery?.toLowerCase() ?? "");
+
 
     const matchesSeverity = severityFilter === "all" || post.analysis?.hazardInfo?.severity === severityFilter
 
