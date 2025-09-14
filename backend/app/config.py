@@ -7,7 +7,7 @@ import os
 
 class Settings(BaseSettings):
     # Database
-    database_url: str = "postgresql://user:password@localhost:5432/atlas_alert"
+    database_url: str = "postgresql+psycopg2://neondb_owner:npg_XCgW5yrakK1t@ep-soft-sunset-ad8xrfyh-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require"
     
     # Redis for Celery
     redis_url: str = "redis://localhost:6379/0"

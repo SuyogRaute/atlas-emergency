@@ -9,7 +9,7 @@ import uvicorn
 import os
 from contextlib import asynccontextmanager
 
-from .database import engine, Base
+from .database import engine, Base, init_postgis
 from .routers import reports, social, alerts, admin, websocket, hotspots
 from .config import settings
 from .websocket_manager import WebSocketManager
@@ -20,6 +20,7 @@ websocket_manager = WebSocketManager()
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
+    init_postgis()
     Base.metadata.create_all(bind=engine)
     yield
     # Shutdown

@@ -56,8 +56,8 @@ async def issue_alert(
 
 @router.get("/", response_model=List[AlertResponse])
 def get_alerts(
-    status: Optional[str] = None,
-    db: Session = Depends(get_db)
+        status: str | None = None,
+        db: Session = Depends(get_db)
 ):
     """Get alerts with optional status filter"""
     query = db.query(Alert)

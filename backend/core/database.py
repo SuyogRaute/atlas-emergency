@@ -31,3 +31,7 @@ async def get_database():
 async def close_db():
     """Close database connection"""
     await database.disconnect()
+
+
+def get_db():
+    return None

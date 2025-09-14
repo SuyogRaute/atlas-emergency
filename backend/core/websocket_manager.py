@@ -64,3 +64,7 @@ class WebSocketManager:
         """Remove user from a room"""
         if user_id in self.user_rooms and room_id in self.user_rooms[user_id]:
             self.user_rooms[user_id].remove(room_id)
+
+
+def websocket_manager():
+    return None

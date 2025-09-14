@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
-from typing import List, Dict, Optional
+from typing import List, Dict, Any
 import logging
 from datetime import datetime, timedelta
 
@@ -11,10 +11,10 @@ from ..core.websocket_manager import websocket_manager
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/alerts", tags=["alerts"])
 
-@router.get("/", response_model=Dict)
+@router.get("/", response_model=Dict[str, Any])
 async def get_alerts(
     active_only: bool = True,
-    severity: Optional[str] = None,
+    severity: str | None = None,
     limit: int = 50,
     db: Session = Depends(get_db)
 ):
@@ -30,8 +30,9 @@ async def get_alerts(
             current_time = datetime.utcnow()
             filtered_alerts = [
                 alert for alert in filtered_alerts 
-                if alert['status'] == 'ACTIVE' and 
-                datetime.fromisoformat(alert['expires_at'].replace('Z', '+00:00')) > current_time
+                if alert['status'] == 'ACTIVE' and
+                   datetime.fromisoformat(alert['expires_at'].replace('Z', '+00:00'))
+                   > current_time
             ]
         
         if severity:
@@ -88,7 +89,7 @@ async def create_alert(
         # Background tasks for alert distribution
         background_tasks.add_task(broadcast_alert, new_alert)
         background_tasks.add_task(send_sms_notifications, new_alert)
-        
+
         return {
             'success': True,
             'alert': new_alert,
