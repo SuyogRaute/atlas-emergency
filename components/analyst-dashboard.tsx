@@ -13,10 +13,6 @@ import { SocialMediaFeed } from "@/components/social-media-feed"
 import { ThreatMap } from "@/components/threat-map"
 import { AnalyticsCharts } from "@/components/analytics-charts"
 import { ReportsList } from "@/components/reports-list"
-console.log("SocialMediaFeed:", SocialMediaFeed);
-console.log("ThreatMap:", ThreatMap);
-console.log("AnalyticsCharts:", AnalyticsCharts);
-console.log("ReportsList:", ReportsList);
 
 export function AnalystDashboard() {
   const [activeTab, setActiveTab] = useState("overview")
