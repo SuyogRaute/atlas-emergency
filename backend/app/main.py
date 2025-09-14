@@ -43,7 +43,7 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(reports.router, prefix="/api")
+app.include_router(reports.router, prefix="/api/reports")
 app.include_router(social.router, prefix="/api")
 app.include_router(alerts.router, prefix="/api")
 app.include_router(admin.router, prefix="/api")

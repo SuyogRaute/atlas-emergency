@@ -85,19 +85,49 @@ export function EmergencyReportForm({ onClose }: EmergencyReportFormProps) {
     }
   }
 
-  const handleSubmit = async () => {
-    // Simulate form submission
-    console.log("Submitting report:", formData)
-
-    // Here you would typically send the data to your API
-    // const response = await fetch('/api/reports', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(formData)
-    // })
-
-    onClose()
+ const handleSubmit = async () => {
+  if (!formData.location) {
+    return alert("Please set your location before submitting");
   }
+
+  // Get user ID if available, otherwise null
+  const userId = window.currentUser?.id || null; // replace window.currentUser with your auth/user context
+
+  const payload = {
+    user_id: userId,
+    source: "app",
+    hazard_type: formData.hazardType,
+    severity: formData.severity,
+    description: formData.description || "",
+    media_key: "", // handle media upload separately if needed
+    lat: formData.location.lat,
+    lon: formData.location.lng,
+  };
+
+  try {
+    const response = await fetch("http://localhost:8000/api/reports/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const err = await response.json();
+      console.error("Submission error:", err);
+      alert("Failed to submit: " + JSON.stringify(err.detail));
+      return;
+    }
+
+    const data = await response.json();
+    console.log("Report submitted:", data);
+    alert("Report submitted successfully!");
+    onClose();
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    alert("Unexpected error occurred");
+  }
+};
+
 
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
